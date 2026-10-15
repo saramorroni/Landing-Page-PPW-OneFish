@@ -1,0 +1,15 @@
+ONE FISH — ATUALIZAÇÃO COM DUAS IMAGENS
+
+1. Guarde uma cópia do index.html atual.
+2. Extraia todo o conteúdo deste ZIP dentro da pasta do seu site.
+3. Aceite substituir index.html e produtos.js e mesclar a pasta imagens. Não apague sua pasta imagens atual.
+4. Abra index.html ou recarregue o site com Ctrl+F5.
+
+JÁ INCLUÍDAS E CONFIGURADAS
+imagens/projeto.png — imagem do aquário no cartão Aquários sob medida e na janela de detalhes.
+imagens/racao.png — imagem da ração no cartão OceanTech Color Flakes e na janela de detalhes.
+
+As demais imagens (logo, fundos, coral, peixe e sobre nós) continuam usando seus caminhos anteriores e devem permanecer na sua pasta imagens. Não foram incluídas porque não foram fornecidas.
+
+Clique nos cartões para abrir as descrições na mesma página. Feche pelo botão, pela tecla Esc ou clicando fora da janela.
+O formulário prepara a mensagem no WhatsApp; o visitante revisa e envia por lá. Não envia e-mail.

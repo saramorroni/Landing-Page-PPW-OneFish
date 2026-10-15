@@ -26,7 +26,7 @@
       --text-white: #ffffff;     /* Texto Principal Branco */
       --text-gray: #a0a0a0;      /* Texto Secundário Cinza */
       --font-serif: 'Georgia', serif;
-      --font-sans: 'Georgia', sans-serif;
+      --font-sans: 'Montserrat', Arial, sans-serif;
     }
 
     * {
@@ -202,7 +202,7 @@
     }
 
     /* ==========================================
-       GALERIA DE PEIXES E CORAIS
+       GALERIA: TUDO PARA SEU AQUÁRIO MARINHO
        ========================================== */
     .gallery-section {
       max-width: 1100px;
@@ -232,16 +232,22 @@
     }
 
     .gallery-card {
+      display: block;
       background-color: var(--card-bg);
       border-radius: 8px;
       overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, border-color 0.3s ease;
     }
 
     .gallery-card:hover {
       transform: translateY(-5px);
       border-color: var(--accent-blue);
+    }
+
+    .gallery-card:focus-visible {
+      outline: 2px solid var(--accent-blue);
+      outline-offset: 3px;
     }
 
     .gallery-card img {
@@ -269,6 +275,27 @@
       font-size: 1.1rem;
       color: var(--text-white);
       margin-top: 5px;
+    }
+
+    .gallery-desc {
+      font-size: 0.85rem;
+      color: var(--text-gray);
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+
+    .gallery-more {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+    }
+
+    .gallery-card:hover .gallery-more {
+      color: #60a5fa;
     }
 
     /* ==========================================
@@ -469,7 +496,33 @@
         padding: 25px;
       }
     }
-  </style>
+  
+    button.gallery-card { width:100%; color:inherit; font:inherit; cursor:pointer; text-align:inherit; }
+    .gallery-info {display:block;} .gallery-tag,.gallery-name,.gallery-desc {display:block;}
+    .gallery-card {display:flex!important; flex-direction:column;} .gallery-info {flex:1;}
+    .gallery-tag,.gallery-more {color:#78b6ff;} .gallery-desc {color:#b9c3d1;}
+    button.dot {border:0;padding:0;} a:focus-visible,button:focus-visible {outline:3px solid #8bc4ff;outline-offset:4px;}
+    .top-header {padding-left:190px;padding-right:190px;}
+    .product-dialog {background:#101722;color:#f4f7fc;border:1px solid #334155;border-radius:20px;padding:0;width:min(880px,calc(100% - 28px));max-height:calc(100dvh - 32px);margin:auto;box-shadow:0 24px 90px #000a;}
+    .product-dialog::backdrop {background:#000b;backdrop-filter:blur(5px);}
+    body.dialog-open {overflow:hidden;}
+    .dialog-header {position:sticky;top:0;z-index:1;background:#101722;display:flex;gap:16px;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #ffffff18;}
+    .dialog-header span {color:#8bc4ff;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;}
+    .dialog-close {border:1px solid #506076;background:#1c293c;color:white;padding:10px 16px;border-radius:24px;cursor:pointer;font:inherit;flex-shrink:0;}
+    .dialog-content {display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:28px;padding:26px;}
+    .dialog-image {width:100%;max-height:380px;object-fit:cover;border-radius:12px;background:#050505;}
+    .dialog-copy {min-width:0;} .dialog-copy h2 {font-family:var(--font-serif);font-size:1.75rem;line-height:1.25;margin-bottom:16px;}
+    .dialog-copy p {color:#c8d3e2;margin-bottom:16px;} .dialog-copy h3 {font-size:.94rem;margin:20px 0 10px;}
+    .dialog-copy ul {padding-left:20px;color:#c8d3e2;} .dialog-copy li {margin:8px 0;}
+    .dialog-note {background:#17263a;border-left:3px solid #71b5ff;border-radius:6px;padding:12px;font-size:.82rem;margin-top:20px;}
+    .dialog-contact {display:inline-flex;align-items:center;justify-content:center;margin-top:8px;padding:12px 18px;background:#2563eb;color:white;border-radius:24px;font-size:.9rem;font-weight:600;}
+    .gallery-card img {background:#0b192b;} .contact-note {color:#b6c1d1;font-size:.8rem;}
+    @media(max-width:768px){.top-header {padding:16px;}.about-box{padding:24px;}.floating-buttons{right:14px;bottom:14px;}.dialog-content {grid-template-columns:1fr;padding:18px;gap:20px;}.dialog-image{max-height:230px;}.dialog-header{padding:14px 18px;}.gallery-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}.gallery-card img{height:170px;}.gallery-info{padding:14px 10px;}.gallery-name{font-size:1rem;}.gallery-desc{font-size:.8rem;}.hero-carousel{min-height:300px;}}
+    @media(max-width:420px){.gallery-grid{grid-template-columns:1fr;}.gallery-card img{height:230px;}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important;}}
+
+.gallery-card[data-product="racoes"] img {object-fit:contain;background:#08051e;}
+</style>
 </head>
 <body>
 
@@ -489,48 +542,56 @@
 
     <!-- Indicadores do Slider -->
     <div class="carousel-dots">
-      <div class="dot active" onclick="setSlide(0)"></div>
-      <div class="dot" onclick="setSlide(1)"></div>
+      <button type="button" class="dot active" onclick="setSlide(0)" aria-label="Mostrar primeira imagem" aria-pressed="true"></button>
+      <button type="button" class="dot" onclick="setSlide(1)" aria-label="Mostrar segunda imagem" aria-pressed="false"></button>
     </div>
   </section>
 
-  <!-- GALERIA DE EXPOSIÇÃO -->
-  <section class="gallery-section">
+  <!-- TUDO PARA SEU AQUÁRIO MARINHO (cada cartão abre detalhes nesta página) -->
+  <section class="gallery-section" id="produtos">
     <h2 class="section-title">Tudo para seu Aquário Marinho</h2>
     <p class="section-subtitle">Confira alguns produtos selecionados pela One Fish</p>
 
     <div class="gallery-grid">
-      <div class="gallery-card">
-        <img src="imagens/coral 2.jpeg" alt="Coral Hammer">
-        <div class="gallery-info">
-          <span class="gallery-tag">CORAIS</span>
-          <h3 class="gallery-name">Coral Torch Gold Tip</h3>
-        </div>
-      </div>
+      <button type="button" class="gallery-card" data-product="corais" aria-haspopup="dialog" aria-controls="product-dialog">
+        <img src="imagens/coral 2.jpeg" alt="Corais">
+        <span class="gallery-info">
+          <span class="gallery-tag">Corais</span>
+          <span class="gallery-name">Coral Torch Gold Tip</span>
+          <span class="gallery-desc">Um destaque de cor e movimento para a composição do seu aquário marinho.</span>
+          <span class="gallery-more">Ver detalhes <span aria-hidden="true">＋</span></span>
+        </span>
+      </button>
 
-      <div class="gallery-card">
-        <img src="imagens/peixe 1.jpeg" alt="Peixe Dory">
-        <div class="gallery-info">
-          <span class="gallery-tag">PEIXES MARINHOS</span>
-          <h3 class="gallery-name">Paracanthurus Hepatus (Dory)</h3>
-        </div>
-      </div>
+      <button type="button" class="gallery-card" data-product="peixes" aria-haspopup="dialog" aria-controls="product-dialog">
+        <img src="imagens/peixe 1.jpeg" alt="Peixes Marinhos">
+        <span class="gallery-info">
+          <span class="gallery-tag">Peixes Marinhos</span>
+          <span class="gallery-name">Paracanthurus hepatus (Dory)</span>
+          <span class="gallery-desc">O azul marcante do hepatus chama atenção. Conheça a espécie antes de escolher.</span>
+          <span class="gallery-more">Ver detalhes <span aria-hidden="true">＋</span></span>
+        </span>
+      </button>
 
-      <div class="gallery-card">
-        <img src="imagens/racao.png" alt="Coral Torch">
-        <div class="gallery-info">
-          <span class="gallery-tag">RAÇÕES</span>
-          <h3 class="gallery-name">OceanTech Color Flakes</h3>
-        </div>
-      </div>
+      <button type="button" class="gallery-card" data-product="racoes" aria-haspopup="dialog" aria-controls="product-dialog">
+        <img src="imagens/racao.png" alt="Rações">
+        <span class="gallery-info">
+          <span class="gallery-tag">Rações</span>
+          <span class="gallery-name">OceanTech Color Flakes</span>
+          <span class="gallery-desc">Uma opção de alimentação em flocos para compor a rotina dos seus peixes.</span>
+          <span class="gallery-more">Ver detalhes <span aria-hidden="true">＋</span></span>
+        </span>
+      </button>
 
-      <div class="gallery-card">
-        <img src="imagens/projeto.png" alt="Peixe Anjo">
-        <div class="gallery-info">
-          <span class="gallery-tag">PROJETOS</span>
-          <h3 class="gallery-name">Sob medidas</h3>
-        </div>
-      </div>
+      <button type="button" class="gallery-card" data-product="projetos" aria-haspopup="dialog" aria-controls="product-dialog">
+        <img src="imagens/projeto.png" alt="Projetos">
+        <span class="gallery-info">
+          <span class="gallery-tag">Projetos</span>
+          <span class="gallery-name">Aquários sob medida</span>
+          <span class="gallery-desc">Seu espaço, seu estilo e um projeto pensado para a rotina de manutenção.</span>
+          <span class="gallery-more">Ver detalhes <span aria-hidden="true">＋</span></span>
+        </span>
+      </button>
     </div>
   </section>
 
@@ -549,19 +610,19 @@
     </div>
   </section>
 
-    <!-- BARRA DE DIFERENCIAIS -->
+  <!-- BARRA DE DIFERENCIAIS -->
   <section class="info-bar">
     <div class="info-container">
       <div class="info-item">
         <i class="fa-solid fa-water"></i>
         <h4>Quarentena Rigorosa</h4>
-        <p>Animais bem aclimatados e 100% saudáveis.</p>
+        <p>Consulte nossa equipe sobre a aclimatação e as condições dos animais disponíveis.</p>
       </div>
 
       <div class="info-item">
         <i class="fa-solid fa-truck-fast"></i>
         <h4>Envio Especializado</h4>
-        <p>Embalagens térmicas para transporte seguro em todo o Brasil.</p>
+        <p>Consulte a disponibilidade de envio, as regiões atendidas e as condições de transporte.</p>
       </div>
 
       <div class="info-item">
@@ -576,9 +637,9 @@
   <section class="contact-section">
     <div class="contact-box">
       <h2 class="section-title">Entre em Contato</h2>
-      <p class="section-subtitle">Preencha o formulário abaixo e entraremos em contato com você</p>
+      <p class="section-subtitle">Preencha os campos para preparar sua mensagem e continuar pelo WhatsApp.</p>
 
-      <form class="contact-form" action="#" method="POST">
+      <form class="contact-form" id="contact-form">
         <div class="form-group">
           <label for="nome">Nome Completo</label>
           <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
@@ -599,7 +660,8 @@
           <textarea id="mensagem" name="mensagem" placeholder="Como podemos te ajudar? Conte sobre seu aquário ou projeto..." required></textarea>
         </div>
 
-        <button type="submit" class="btn-submit">Enviar Mensagem</button>
+        <p class="contact-note">Ao continuar, você abre o WhatsApp com os dados preenchidos. Revise a mensagem e envie por lá; este formulário não envia e-mail.</p>
+        <button type="submit" class="btn-submit">Continuar no WhatsApp</button>
       </form>
     </div>
   </section>
@@ -611,10 +673,10 @@
 
   <!-- BOTÕES FLUTUANTES (WHATSAPP E INSTAGRAM) -->
   <div class="floating-buttons">
-    <a href="https://www.instagram.com/onefish_aquarismo?stkn=MTNocDB0N2tieGczbw%3D%3D&utm_source=qr" target="_blank" class="float-btn btn-instagram-float" title="Instagram">
+    <a href="https://www.instagram.com/onefish_aquarismo?stkn=MTNocDB0N2tieGczbw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" class="float-btn btn-instagram-float" title="Instagram" aria-label="Abrir Instagram da One Fish">
       <i class="fa-brands fa-instagram"></i>
     </a>
-    <a href="https://wa.me/5511979636052" target="_blank" class="float-btn btn-whatsapp-float" title="WhatsApp">
+    <a href="https://wa.me/5511979636052" target="_blank" rel="noopener noreferrer" class="float-btn btn-whatsapp-float" title="WhatsApp" aria-label="Conversar com a One Fish no WhatsApp">
       <i class="fa-brands fa-whatsapp"></i>
     </a>
   </div>
@@ -629,6 +691,7 @@
       slides.forEach((slide, i) => {
         slide.classList.remove('active');
         dots[i].classList.remove('active');
+        dots[i].setAttribute('aria-pressed', String(i === index));
       });
       
       slides[index].classList.add('active');
@@ -641,11 +704,21 @@
     }
 
     // Transição automática a cada 5 segundos
-    setInterval(() => {
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => {
       let nextSlide = (currentSlide + 1) % slides.length;
       showSlide(nextSlide);
     }, 5000);
   </script>
+
+
+  <dialog id="product-dialog" class="product-dialog" aria-labelledby="product-title" aria-describedby="product-description">
+    <header class="dialog-header"><span id="product-category"></span><button type="button" class="dialog-close" id="close-product" aria-label="Fechar detalhes do produto">Fechar ×</button></header>
+    <div class="dialog-content">
+      <img id="product-image" class="dialog-image" alt="">
+      <div class="dialog-copy"><h2 id="product-title"></h2><p id="product-description"></p><h3>Conheça melhor</h3><ul id="product-points"></ul><p class="dialog-note" id="product-note"></p><a id="product-contact" class="dialog-contact" target="_blank" rel="noopener noreferrer">Consultar pelo WhatsApp ↗</a></div>
+    </div>
+  </dialog>
+  <script src="produtos.js"></script>
 
 </body>
 </html>
